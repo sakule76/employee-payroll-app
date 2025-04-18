@@ -19,7 +19,7 @@ public class EmployeePayrollService implements IEmployeePayrollService {
 
     @Override
     public ResponseDTO createEmployee(EmployeeDTO employeeDTO) {
-        Employee employee = new Employee(employeeDTO.getName(), employeeDTO.getSalary());
+        Employee employee = new Employee(employeeDTO.getName(), employeeDTO.getSalary(), employeeDTO.getGender(), employeeDTO.getStartDate(), employeeDTO.getProfilePic(), employeeDTO.getDepartments());
         employeeRepository.save(employee);
         return new ResponseDTO("Created Employee payroll data successfully", HttpStatus.CREATED , employee);
     }
@@ -28,7 +28,7 @@ public class EmployeePayrollService implements IEmployeePayrollService {
     public ResponseDTO getEmployeeById(long employeeId) {
         Optional<Employee> optionalEmployee = employeeRepository.findById(employeeId);
         if(optionalEmployee.isPresent()) {
-            return new ResponseDTO("Employee fetched successfully", HttpStatus.OK, optionalEmployee);
+            return new ResponseDTO("Employee fetched successfully", HttpStatus.OK, optionalEmployee.get());
         } else {
             throw new CustomException("Employee with ID " + employeeId + " not found");
         }
@@ -42,6 +42,10 @@ public class EmployeePayrollService implements IEmployeePayrollService {
 
             updatedEmployee.setName(employeeDTO.getName());
             updatedEmployee.setSalary(employeeDTO.getSalary());
+            updatedEmployee.setGender(employeeDTO.getGender());
+            updatedEmployee.setStartDate(employeeDTO.getStartDate());
+            updatedEmployee.setProfilePic(employeeDTO.getProfilePic());
+            updatedEmployee.setDepartments(employeeDTO.getDepartments());
 
             employeeRepository.save(updatedEmployee);
 
@@ -69,7 +73,12 @@ public class EmployeePayrollService implements IEmployeePayrollService {
     @Override
     public ResponseDTO getAllEmployees() {
         List<Employee> allEmployees = employeeRepository.findAll();
-
         return new ResponseDTO("Employees fetched successfully", HttpStatus.OK, allEmployees);
+    }
+
+    @Override
+    public ResponseDTO getEmployeesByDepartment(String department) {
+        List<Employee> employeesInDepartment = employeeRepository.findByDepartmentsContaining(department);
+        return new ResponseDTO("Employees fetched by department successfully", HttpStatus.OK, employeesInDepartment);
     }
 }

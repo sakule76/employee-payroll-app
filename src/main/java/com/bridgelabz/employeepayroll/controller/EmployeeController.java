@@ -14,7 +14,7 @@ public class EmployeeController {
     @Autowired
     private EmployeePayrollService employeeService;
 
-    @GetMapping(value = {"","/","/get"})
+    @GetMapping(value = {"", "/", "/get"})
     public ResponseDTO getAllEmployees() {
         return employeeService.getAllEmployees();
     }
@@ -22,6 +22,11 @@ public class EmployeeController {
     @GetMapping("/get/{id}")
     public ResponseDTO getEmployee(@PathVariable long id) {
         return employeeService.getEmployeeById(id);
+    }
+
+    @GetMapping("/department/{department}")
+    public ResponseDTO getEmployeesByDepartment(@PathVariable String department) {
+        return employeeService.getEmployeesByDepartment(department);
     }
 
     @PostMapping("/create")
