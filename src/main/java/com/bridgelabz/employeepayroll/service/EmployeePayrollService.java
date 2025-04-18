@@ -2,6 +2,7 @@ package com.bridgelabz.employeepayroll.service;
 
 import com.bridgelabz.employeepayroll.dto.EmployeeDTO;
 import com.bridgelabz.employeepayroll.dto.ResponseDTO;
+import com.bridgelabz.employeepayroll.exceptionhandlers.CustomException;
 import com.bridgelabz.employeepayroll.model.Employee;
 import com.bridgelabz.employeepayroll.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class EmployeePayrollService implements IEmployeePayrollService {
         if(optionalEmployee.isPresent()) {
             return new ResponseDTO("Employee fetched successfully", HttpStatus.OK, optionalEmployee);
         } else {
-            return new ResponseDTO("Employee not found", HttpStatus.NOT_FOUND, null);
+            throw new CustomException("Employee with ID " + employeeId + " not found");
         }
     }
 
