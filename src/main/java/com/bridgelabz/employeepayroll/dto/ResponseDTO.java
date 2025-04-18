@@ -1,27 +1,16 @@
 package com.bridgelabz.employeepayroll.dto;
 
-public class ResponseDTO {
+import lombok.Data;
+import org.springframework.http.HttpStatus;
+
+public @Data class ResponseDTO {
     private String message;
+    private int statusCode;
     private Object data;
 
-    public ResponseDTO(String message, Object data) {
-        this.message = message;
-        this.data = data;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public Object getData() {
-        return data;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public void setData(Object data) {
+    public ResponseDTO(String message, HttpStatus statusCode, Object data) {
+        this.message=message;
+        this.statusCode = statusCode.value();
         this.data = data;
     }
 }
